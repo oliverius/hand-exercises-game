@@ -1,0 +1,5 @@
+temp/
+node_modules/
+src/vendor/
+src/models/*.task
+package-lock.json

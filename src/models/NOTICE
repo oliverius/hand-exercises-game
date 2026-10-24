@@ -1,0 +1,6 @@
+Gesture Recognizer model bundle, float16 version 1
+Copyright Google LLC / The MediaPipe Authors.
+Distributed as part of MediaPipe under Apache-2.0.
+License: ../vendor/mediapipe/LICENSE
+Source: https://storage.googleapis.com/mediapipe-models/gesture_recognizer/gesture_recognizer/float16/1/gesture_recognizer.task
+SHA-256: 97952348cf6a6a4915c2ea1496b4b37ebabc50cbbf80571435643c455f2b0482

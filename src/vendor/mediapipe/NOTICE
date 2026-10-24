@@ -1,0 +1,6 @@
+MediaPipe Tasks Vision 0.10.22-rc.20250304
+Copyright Google LLC / The MediaPipe Authors.
+Licensed under the Apache License, Version 2.0. See LICENSE.
+Source: https://github.com/google-ai-edge/mediapipe
+Pinned package provenance and hashes: /docs/assets.md in the source repository.
+Runtime and WASM files are unmodified; source map is named to match the bundle reference.
