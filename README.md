@@ -1,5 +1,7 @@
 # Hand space
 
+[![Open live demo](https://img.shields.io/badge/Open-Live_Demo-4f7c82?style=for-the-badge)](https://oliverius.github.io/hand-exercises-game/)
+
 A calm V1 hand-exercise timer. Vanilla HTML, CSS and ES modules, with all application files under `src/`. No runtime build step, account, database, backend or telemetry.
 
 ## Try it locally
