@@ -35,6 +35,28 @@
       <div class="intro">
         <p class="eyebrow">YOUR PRACTICE SPACE</p>
       </div>
+      <div class="setup-controls" role="group" aria-label="Practice settings">
+        <label class="setup-field" for="target"
+          ><span>Hold target</span>
+          <select id="target">
+            <option value="3000">3 seconds</option>
+            <option value="5000" selected>5 seconds</option>
+            <option value="10000">10 seconds</option>
+          </select>
+        </label>
+        <label class="setup-field" for="sensitivity"
+          ><span>Gesture recognition</span>
+          <select id="sensitivity">
+            <option value="0.7">70%</option>
+            <option value="0.65">65%</option>
+            <option value="0.6">60%</option>
+            <option value="0.55">55%</option>
+            <option value="0.5" selected>Standard · 50%</option>
+            <option value="0.45">45%</option>
+            <option value="0.4">40%</option>
+          </select>
+        </label>
+      </div>
       <div class="workspace">
         <section class="camera-panel" aria-label="Camera preview">
           <div class="preview">
@@ -69,16 +91,9 @@
             <div id="countdown" hidden aria-live="polite"></div>
           </div>
           <div class="camera-bottom">
-            <label class="target-label" for="target"
-              >Hold target
-              <select id="target">
-                <option value="3000">3 seconds</option>
-                <option value="5000" selected>5 seconds</option>
-                <option value="10000">10 seconds</option>
-              </select>
-            </label>
-            <button id="camera">Enable camera</button>
-            <span id="camera-state">Enable camera for gesture control</span>
+            <span id="camera-state" aria-live="polite" aria-atomic="true"
+              >Camera is off</span
+            ><button id="camera">Enable camera</button>
           </div>
         </section>
         <section class="hold-panel" aria-labelledby="hold-title">
@@ -109,21 +124,8 @@
       </div>
       <div class="controls">
         <button id="start" class="primary">Start · 10 sec preparation</button
-        ><button id="stop">Stop / Reset</button
-        ><label class="mode"
-          ><input type="checkbox" id="manual" checked /> Manual mode</label
-        >
-        <div id="manual-controls">
-          <button id="open">Begin open hold</button
-          ><button id="close">End hold</button>
-        </div>
-      </div>
-      <footer>
-        <p id="notice" role="status">
-          Manual mode: use Begin open hold and End hold to record your own
-          timing.
-        </p>
-        <div class="footer-actions">
+        ><button id="stop">Stop / Reset</button>
+        <div class="control-actions">
           <a
             class="github-link"
             href="https://github.com/oliverius/hand-exercises-game"
@@ -143,32 +145,36 @@
             Help
           </button>
         </div>
+        <label class="mode"
+          ><input type="checkbox" id="manual" checked /> Manual mode (use
+          buttons)</label
+        >
+        <div id="manual-controls">
+          <button id="open">Begin open hold</button
+          ><button id="close">End hold</button>
+        </div>
+      </div>
+      <footer>
+        <p id="notice" role="status">
+          Manual mode: use Begin open hold and End hold to record your own
+          timing.
+        </p>
       </footer>
       <section id="details" hidden>
         <h2>Comfort comes first</h2>
-        <label class="sensitivity-label" for="sensitivity"
-          >Gesture recognition
-          <select id="sensitivity">
-            <option value="0.7">70% confidence</option>
-            <option value="0.65">65% confidence</option>
-            <option value="0.6">60% confidence</option>
-            <option value="0.55">55% confidence</option>
-            <option value="0.5" selected>Standard · 50% confidence</option>
-            <option value="0.45">45% confidence</option>
-            <option value="0.4">40% confidence</option>
-          </select>
-        </label>
         <p>
           Seeing the hand points means the hand is tracked; its posture may
           still be uncertain. The camera preview shows the predicted gesture and
-          hand side. Lower thresholds accept lower-confidence gestures and may
-          make more mistakes. Changing this setting stops the current practice.
+          hand side. Gesture recognition sets the minimum confidence accepted
+          for a gesture. Lower thresholds accept lower-confidence gestures and
+          may make more mistakes. Changing the setting stops current practice.
         </p>
         <p>
           Use one hand. With the camera ready, hold one finger pointing up for ¾
           second to start a 3-second countdown, or press Start for 10 seconds.
           Open your palm to begin a hold; close your hand to finish. Stop at any
-          time. Manual mode works without making a particular gesture.
+          time. Manual mode uses the Begin open hold and End hold buttons to
+          time a hold without camera gestures.
         </p>
         <p>
           The classifier can miss a partially open hand. These timings are

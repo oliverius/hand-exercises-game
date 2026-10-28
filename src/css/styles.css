@@ -126,13 +126,23 @@ h2 {
   font-size: 22px;
   font-weight: 600;
 }
-.target-label {
-  display: flex;
-  align-items: center;
+.setup-controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: min(100%, 332px);
   gap: 12px;
+  margin-bottom: 14px;
+}
+.setup-field {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
   color: var(--muted);
-  font-size: 14px;
-  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 650;
+}
+.setup-field select {
+  width: 100%;
 }
 select {
   min-height: 48px;
@@ -227,12 +237,6 @@ canvas {
   font-weight: 600;
   pointer-events: none;
 }
-.sensitivity-label {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-}
 @media (orientation: landscape) and (max-height: 500px) {
   .recognition-readout {
     bottom: 5px;
@@ -242,25 +246,16 @@ canvas {
   }
 }
 .camera-bottom {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 10px 16px;
-  gap: 4px 8px;
+  gap: 8px;
   font-size: 13px;
   color: var(--muted);
 }
-.camera-bottom .target-label {
-  grid-column: 1;
-  grid-row: 1;
-}
-.camera-bottom #camera {
-  grid-column: 2;
-  grid-row: 1;
-}
 .camera-bottom #camera-state {
-  grid-column: 1 / -1;
-  grid-row: 2;
+  flex: 1;
 }
 .camera-bottom button {
   min-height: 48px;
@@ -361,11 +356,12 @@ input {
   display: flex;
   gap: 10px;
 }
-.footer-actions {
+.control-actions {
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  gap: 12px;
+  gap: 8px;
+  margin-left: auto;
 }
 .github-link {
   display: grid;
@@ -409,7 +405,7 @@ footer p {
   font-size: 12px;
   line-height: 1.5;
 }
-footer button {
+.control-actions button {
   min-height: 44px;
   padding: 8px 12px;
   font-size: 12px;
@@ -549,6 +545,9 @@ small {
   .mode {
     min-height: 48px;
   }
+  .control-actions {
+    margin-left: auto;
+  }
   .timer strong {
     font-size: 44px;
   }
@@ -603,10 +602,13 @@ small {
     padding: 20px;
   }
   .controls > .primary {
-    flex: 1;
+    flex: 0 0 100%;
   }
   .controls {
     gap: 8px;
+  }
+  .control-actions {
+    margin-left: 0;
   }
   .controls button {
     padding: 10px 14px;

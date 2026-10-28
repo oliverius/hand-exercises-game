@@ -27,6 +27,10 @@ let prediction = null;
 const notice = (text) => {
   $('notice').textContent = text;
 };
+const cameraStatus = (text) => {
+  if ($('camera-state').textContent !== text)
+    $('camera-state').textContent = text;
+};
 const engine = new Exercise({
   save: (attempt) => {
     if (!session) return;
@@ -99,7 +103,7 @@ function shutdownCamera() {
   closeCamera($('video'));
   $('placeholder').hidden = false;
   $('camera').textContent = 'Enable camera';
-  $('camera-state').textContent = 'Camera is off';
+  cameraStatus('Camera is off');
   $('preview-label').textContent = 'CAMERA OFF';
   draw($('landmarks'), $('video'));
   lastVideoTime = -1;
@@ -119,21 +123,22 @@ $('camera').onclick = async () => {
   $('camera').disabled = true;
   const generation = ++cameraGeneration;
   try {
-    $('camera-state').textContent = 'Waiting for camera permission…';
+    cameraStatus('Waiting for camera permission…');
     await openCamera($('video'));
     if (generation !== cameraGeneration || document.hidden) {
       closeCamera($('video'));
       return;
     }
     $('placeholder').hidden = true;
-    $('camera-state').textContent = 'Loading gesture model…';
+    cameraStatus('Loading gesture model…');
     recognizer ??= await createRecognizer();
     if (generation !== cameraGeneration || document.hidden) {
       closeCamera($('video'));
       return;
     }
     cameraReady = true;
-    $('camera-state').textContent = 'Ready · one hand in view';
+    lastInference = 0;
+    cameraStatus('Checking for a hand…');
     $('camera').textContent = 'Turn camera off';
     setMode(false);
     $('video')
@@ -155,7 +160,7 @@ $('camera').onclick = async () => {
       error.message.includes('Camera') || error.message.includes('camera')
         ? error.message
         : 'Gesture model could not load. Retry Enable camera, or use manual mode.';
-    $('camera-state').textContent = message;
+    cameraStatus(message);
     notice(message);
   } finally {
     cameraPending = false;
@@ -177,6 +182,9 @@ function frame(now) {
     lastVideoTime = $('video').currentTime;
     try {
       const result = recognizer.recognizeForVideo($('video'), now);
+      cameraStatus(
+        result.landmarks.length > 0 ? 'Hand detected' : 'No hand detected',
+      );
       const gesture = result.gestures[0]?.[0];
       const hand = result.handedness[0]?.[0];
       prediction = recognitionFeedback(
@@ -210,8 +218,9 @@ function frame(now) {
       );
     }
   }
-  if (cameraReady && now - lastInference > 500) {
+  if (cameraReady && lastInference > 0 && now - lastInference > 500) {
     prediction = null;
+    cameraStatus('Camera frames paused');
     $('recognised-gesture').textContent = 'Gesture: Waiting for camera frames';
     $('recognised-hand').textContent = 'Hand: —';
     $('debug').textContent = 'Camera frames paused. No current prediction.';
