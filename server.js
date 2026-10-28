@@ -57,5 +57,5 @@ http
     });
   })
   .listen(port, '127.0.0.1', () =>
-    console.log(`Hand space running at http://localhost:${port}`),
+    console.log(`Hand exercises running at http://localhost:${port}`),
   );

@@ -1,6 +1,6 @@
 {
-  "name": "Hand space",
-  "short_name": "Hand space",
+  "name": "Hand exercises",
+  "short_name": "Hand exercises",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

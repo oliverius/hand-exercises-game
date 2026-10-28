@@ -7,7 +7,7 @@ export class Exercise {
     this.targetMs = 5000;
     this.method = 'camera';
     this.tracking = 'unknown';
-    this.entryThreshold = 0.7;
+    this.entryThreshold = 0.5;
     this.resetSignal();
   }
   resetSignal() {

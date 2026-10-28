@@ -1,8 +1,8 @@
-# Hand space
+# Hand exercises
 
 [![Open live demo](https://img.shields.io/badge/Open-Live_Demo-4f7c82?style=for-the-badge)](https://oliverius.github.io/hand-exercises-game/)
 
-A calm hand-exercise timer, with optional camera recognition and manual controls.
+A calm hand-exercise timer with camera gesture recognition and manual controls.
 
 ## Why this exists
 

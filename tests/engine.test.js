@@ -19,6 +19,10 @@ function fixture() {
   };
   return { engine, records, sample, open, holdUntil };
 }
+test('gesture recognition defaults to 50% confidence', () => {
+  const { engine } = fixture();
+  assert.equal(engine.entryThreshold, 0.5);
+});
 test('pointing must be continuous for 750ms, then counts down three seconds', () => {
   const { engine: e, sample } = fixture();
   sample('Pointing_Up', 0);
@@ -84,6 +88,7 @@ test('stalled inference cannot count unseen time', () => {
 });
 test('confidence hysteresis retains palm at 0.6, rejects a new gesture at 0.6', () => {
   const { engine: e, sample, records, open } = fixture();
+  e.entryThreshold = 0.7;
   e.start(0);
   e.tick(10000);
   open();

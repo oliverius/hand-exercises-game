@@ -10,9 +10,9 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta
       name="description"
-      content="A calm, private hand-exercise timer with optional camera recognition."
+      content="A calm, private hand-exercise timer with camera gesture recognition and manual controls."
     />
-    <title>Hand space · A gentle hold</title>
+    <title>Hand exercises</title>
     <link rel="icon" href="./icons/hand.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="./icons/icon-192.png" />
     <link rel="manifest" href="./manifest.webmanifest" />
@@ -23,7 +23,7 @@
     <header>
       <div class="brand">
         <div>
-          <strong>Hand space</strong><span>A gentle hold, at your pace.</span>
+          <strong>Hand exercises</strong>
         </div>
       </div>
       <nav aria-label="Main">
@@ -31,20 +31,9 @@
         ><button id="fullscreen" aria-pressed="false">Fullscreen</button>
       </nav>
     </header>
-    <main id="exercise" aria-labelledby="exercise-title">
+    <main id="exercise" aria-label="Hand exercises">
       <div class="intro">
-        <div>
-          <p class="eyebrow">YOUR PRACTICE SPACE</p>
-          <h1 id="exercise-title">Make a little room to move.</h1>
-        </div>
-        <label class="target-label"
-          >Hold target
-          <select id="target">
-            <option value="3000">3 seconds</option>
-            <option value="5000" selected>5 seconds</option>
-            <option value="10000">10 seconds</option>
-          </select></label
-        >
+        <p class="eyebrow">YOUR PRACTICE SPACE</p>
       </div>
       <div class="workspace">
         <section class="camera-panel" aria-label="Camera preview">
@@ -80,8 +69,16 @@
             <div id="countdown" hidden aria-live="polite"></div>
           </div>
           <div class="camera-bottom">
-            <span id="camera-state">Camera is optional</span
-            ><button id="camera">Enable camera</button>
+            <label class="target-label" for="target"
+              >Hold target
+              <select id="target">
+                <option value="3000">3 seconds</option>
+                <option value="5000" selected>5 seconds</option>
+                <option value="10000">10 seconds</option>
+              </select>
+            </label>
+            <button id="camera">Enable camera</button>
+            <span id="camera-state">Enable camera for gesture control</span>
           </div>
         </section>
         <section class="hold-panel" aria-labelledby="hold-title">
@@ -132,7 +129,7 @@
             href="https://github.com/oliverius/hand-exercises-game"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="View Hand space on GitHub (opens in a new tab)"
+            aria-label="View Hand exercises on GitHub (opens in a new tab)"
             title="View on GitHub"
           >
             <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -152,11 +149,11 @@
         <label class="sensitivity-label" for="sensitivity"
           >Gesture recognition
           <select id="sensitivity">
-            <option value="0.7">Standard · 70% confidence</option>
+            <option value="0.7">70% confidence</option>
             <option value="0.65">65% confidence</option>
             <option value="0.6">60% confidence</option>
             <option value="0.55">55% confidence</option>
-            <option value="0.5">50% confidence</option>
+            <option value="0.5" selected>Standard · 50% confidence</option>
             <option value="0.45">45% confidence</option>
             <option value="0.4">40% confidence</option>
           </select>
