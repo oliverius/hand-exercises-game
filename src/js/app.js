@@ -41,7 +41,6 @@ const engine = new Exercise({
     );
   },
 });
-engine.method = 'manual';
 
 function ensureSession() {
   if (session) return;
@@ -62,30 +61,15 @@ function stop() {
   reached = false;
 }
 function start() {
-  if (engine.method === 'camera' && !cameraReady) {
-    notice('Enable the camera, or select manual mode.');
+  if (!cameraReady) {
+    notice('Enable the camera to begin.');
     return;
   }
   ensureSession();
   engine.start(performance.now());
 }
-function setMode(manual) {
-  stop();
-  $('manual').checked = manual;
-  engine.method = manual ? 'manual' : 'camera';
-  $('manual-controls').hidden = !manual;
-  $('preview-label').textContent = cameraReady
-    ? 'MIRRORED · LOCAL CAMERA'
-    : 'CAMERA OFF';
-  notice(
-    manual
-      ? 'Manual mode: use Begin open hold and End hold to record your own timing.'
-      : 'Camera mode: point up for ¾ second, or press Start. Use one hand.',
-  );
-}
 $('start').onclick = start;
 $('stop').onclick = stop;
-$('manual').onchange = () => setMode($('manual').checked);
 $('target').onchange = () => {
   engine.targetMs = Number($('target').value);
 };
@@ -94,8 +78,6 @@ $('sensitivity').onchange = () => {
   engine.entryThreshold = Number($('sensitivity').value);
   notice('Recognition setting changed. Press Start when you are ready.');
 };
-$('open').onclick = () => engine.manual(true, performance.now());
-$('close').onclick = () => engine.manual(false, performance.now());
 
 function shutdownCamera() {
   cameraGeneration++;
@@ -140,7 +122,9 @@ $('camera').onclick = async () => {
     lastInference = 0;
     cameraStatus('Checking for a hand…');
     $('camera').textContent = 'Turn camera off';
-    setMode(false);
+    stop();
+    $('preview-label').textContent = 'MIRRORED · LOCAL CAMERA';
+    notice('Point up for ¾ second, or press Start. Use one hand.');
     $('video')
       .srcObject.getVideoTracks()[0]
       .addEventListener(
@@ -149,17 +133,16 @@ $('camera').onclick = async () => {
           if (!cameraReady) return;
           stop();
           shutdownCamera();
-          notice('Camera disconnected. Reconnect it or use manual mode.');
+          notice('Camera disconnected. Reconnect it to continue.');
         },
         { once: true },
       );
   } catch (error) {
     shutdownCamera();
-    setMode(true);
     const message =
       error.message.includes('Camera') || error.message.includes('camera')
         ? error.message
-        : 'Gesture model could not load. Retry Enable camera, or use manual mode.';
+        : 'Gesture model could not load. Retry Enable camera.';
     cameraStatus(message);
     notice(message);
   } finally {
@@ -212,9 +195,8 @@ function frame(now) {
     } catch {
       stop();
       shutdownCamera();
-      setMode(true);
       notice(
-        'Recognition stopped unexpectedly. Retry the camera or continue in manual mode.',
+        'Recognition stopped unexpectedly. Enable the camera to try again.',
       );
     }
   }
@@ -256,11 +238,8 @@ function render(now) {
   );
   if ($('countdown').textContent !== countdown && engine.phase === 'COUNTDOWN')
     $('countdown').textContent = countdown;
-  $('start').disabled =
-    engine.phase !== 'WAITING' || (engine.method === 'camera' && !cameraReady);
+  $('start').disabled = engine.phase !== 'WAITING' || !cameraReady;
   $('target').disabled = engine.phase !== 'WAITING';
-  $('open').disabled = engine.phase !== 'ACTIVE' || Boolean(engine.hold);
-  $('close').disabled = !engine.hold;
   let status = 'Ready when you are.';
   let instruction =
     'Start, then open your hand comfortably. Close it to finish the hold.';
@@ -273,9 +252,7 @@ function render(now) {
       ? 'Hold comfortably.'
       : 'Open your hand when you’re ready.';
     instruction =
-      engine.method === 'manual'
-        ? 'Begin open hold starts the timer. End hold saves the duration.'
-        : 'Keep one hand in view. Close your hand to save the actual duration.';
+      'Keep one hand in view. Close your hand to save the actual duration.';
     if (
       ['lost', 'unknown'].includes(engine.tracking) &&
       engine.method === 'camera'
@@ -286,7 +263,7 @@ function render(now) {
           : 'Hand tracked; posture uncertain.';
       instruction =
         prediction?.explanation ??
-        'No unseen time is counted. Reposition your hand, or switch to manual mode.';
+        'No unseen time is counted. Reposition your hand in the camera view.';
     }
     if (elapsed >= engine.targetMs) {
       status = 'Target reached. Nicely done.';
@@ -310,6 +287,7 @@ function progress() {
   shutdownCamera();
   $('exercise').hidden = true;
   $('progress-screen').hidden = false;
+  $('progress').textContent = 'Back to practice';
   const s = summary(data.sessions);
   const items = [
     ['Sessions played', s.sessions],
@@ -348,11 +326,15 @@ function progress() {
   $('empty').hidden = s.attempts > 0;
   $('progress-title').focus();
 }
-$('progress').onclick = progress;
-$('back').onclick = () => {
+$('progress').onclick = () => {
+  if ($('progress-screen').hidden) {
+    progress();
+    return;
+  }
   $('progress-screen').hidden = true;
   $('exercise').hidden = false;
-  $('start').focus();
+  $('progress').textContent = 'Progress';
+  $('progress').focus();
 };
 const exportFile = () =>
   new File([csv(data.sessions)], 'hand-space-results.csv', {
@@ -364,10 +346,6 @@ $('download').onclick = () => {
 };
 $('share').onclick = async () => {
   $('export-status').textContent = await share(exportFile());
-};
-$('settings').onclick = () => {
-  $('details').hidden = !$('details').hidden;
-  $('settings').setAttribute('aria-expanded', String(!$('details').hidden));
 };
 $('fullscreen').onclick = async () => {
   try {

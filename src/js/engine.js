@@ -84,13 +84,6 @@ export class Exercise {
       ? Math.max(0.4, this.entryThreshold - 0.15)
       : this.entryThreshold;
   }
-  manual(open, now) {
-    if (this.phase !== 'ACTIVE' || this.method !== 'manual') return;
-    this.tracking = open ? 'Open_Palm' : 'Closed_Fist';
-    if (open && !this.hold)
-      this.hold = { mono: now, iso: new Date(this.wall()).toISOString() };
-    if (!open) this.finish(now, 'completed');
-  }
   elapsed(now) {
     return this.hold ? Math.max(0, now - this.hold.mono) : 0;
   }

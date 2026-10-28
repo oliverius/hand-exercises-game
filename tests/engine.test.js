@@ -120,20 +120,15 @@ test('pointing while active cannot start another countdown', () => {
   for (let n = 10000; n <= 12000; n += 100) sample('Pointing_Up', n);
   assert.equal(e.phase, 'ACTIVE');
 });
-test('manual mode records independently of recognition, stop interrupts once', () => {
-  const { engine: e, records } = fixture();
-  e.method = 'manual';
+test('stopping a camera hold interrupts once', () => {
+  const { engine: e, records, sample } = fixture();
   e.start(0);
-  e.tick(10000);
-  e.manual(true, 11000);
-  e.tick(18000);
-  e.manual(false, 18000);
-  assert.equal(records[0].durationMs, 7000);
-  assert.equal(records[0].detectionMethod, 'manual');
-  e.manual(true, 19000);
-  e.stop(20000);
-  e.stop(21000);
-  assert.equal(records.length, 2);
-  assert.equal(records[1].outcome, 'interrupted');
+  sample('Open_Palm', 10000);
+  sample('Open_Palm', 10200);
+  e.stop(10300);
+  e.stop(10400);
+  assert.equal(records.length, 1);
+  assert.equal(records[0].detectionMethod, 'camera');
+  assert.equal(records[0].outcome, 'interrupted');
   assert.equal(e.phase, 'WAITING');
 });

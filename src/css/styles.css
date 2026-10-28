@@ -129,9 +129,9 @@ h2 {
 .setup-controls {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  width: min(100%, 332px);
+  width: 348px;
   gap: 12px;
-  margin-bottom: 14px;
+  flex-shrink: 0;
 }
 .setup-field {
   display: grid;
@@ -143,6 +143,29 @@ h2 {
 }
 .setup-field select {
   width: 100%;
+}
+.controls select,
+.controls #stop {
+  font-size: 1rem;
+  font-weight: 650;
+  width: 168px;
+  min-height: 60px;
+  padding: 12px 14px;
+}
+.start-control {
+  display: grid;
+  gap: 4px;
+  max-width: 300px;
+}
+.control-guidance {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 650;
+}
+.control-actions {
+  align-self: end;
+  min-height: 60px;
 }
 select {
   min-height: 48px;
@@ -335,26 +358,9 @@ canvas {
 .controls {
   display: flex;
   gap: 10px;
-  align-items: center;
+  align-items: end;
   flex-wrap: wrap;
   margin-top: 18px;
-}
-.mode {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 60px;
-  font-size: 14px;
-  padding: 0 6px;
-}
-input {
-  width: 22px;
-  height: 22px;
-  accent-color: var(--accent);
-}
-#manual-controls {
-  display: flex;
-  gap: 10px;
 }
 .control-actions {
   display: flex;
@@ -405,12 +411,6 @@ footer p {
   font-size: 12px;
   line-height: 1.5;
 }
-.control-actions button {
-  min-height: 44px;
-  padding: 8px 12px;
-  font-size: 12px;
-  white-space: nowrap;
-}
 #countdown {
   position: absolute;
   inset: 0;
@@ -421,6 +421,7 @@ footer p {
   color: var(--accent);
 }
 #details {
+  margin-top: 24px;
   padding: 20px;
   border: 1px solid var(--border);
   border-radius: 16px;
@@ -484,7 +485,7 @@ small {
   clip-path: inset(50%);
 }
 @media (orientation: landscape) and (min-width: 760px) {
-  body:has(#details[hidden]) #exercise {
+  .practice-space {
     height: calc(
       100dvh - 97px - env(safe-area-inset-top) - env(safe-area-inset-bottom)
     );
@@ -512,7 +513,7 @@ small {
   .brand span:not(.brand-mark) {
     display: none;
   }
-  body:has(#details[hidden]) #exercise {
+  .practice-space {
     height: calc(
       100dvh - 61px - env(safe-area-inset-top) - env(safe-area-inset-bottom)
     );
@@ -538,12 +539,11 @@ small {
     margin-top: 10px;
     gap: 6px;
   }
-  .controls button {
+  .controls button,
+  .controls select,
+  .controls #stop {
     min-height: 48px;
     padding: 8px 12px;
-  }
-  .mode {
-    min-height: 48px;
   }
   .control-actions {
     margin-left: auto;
@@ -601,14 +601,21 @@ small {
   .hold-panel {
     padding: 20px;
   }
-  .controls > .primary {
+  .start-control {
     flex: 0 0 100%;
+    max-width: none;
   }
   .controls {
     gap: 8px;
   }
+  .setup-controls {
+    width: min(100%, 348px);
+  }
+  .controls select {
+    width: 100%;
+  }
   .control-actions {
-    margin-left: 0;
+    margin-left: auto;
   }
   .controls button {
     padding: 10px 14px;
