@@ -73,7 +73,20 @@
             </div>
           </section>
           <section class="hold-panel" aria-labelledby="hold-title">
-            <p class="eyebrow" id="hold-title">YOUR HOLD</p>
+            <div class="hold-heading">
+              <p class="eyebrow" id="hold-title">YOUR HOLD</p>
+              <label class="setup-field" for="animation">
+                <span>Animation</span>
+                <select id="animation">
+                  <option value="gauge">Basic gauge</option>
+                  <option value="giraffe">Giraffe</option>
+                  <option value="lighthouse">Lighthouse</option>
+                  <option value="rocket">Rocket</option>
+                  <option value="rose">Rose</option>
+                  <option value="sunflower">Sunflower</option>
+                </select>
+              </label>
+            </div>
             <div class="gauge-row">
               <div
                 id="gauge"
@@ -85,6 +98,8 @@
               >
                 <div id="fill"></div>
                 <span class="gauge-line"></span>
+                <img id="preview-image" alt="" hidden />
+                <img id="reveal-image" alt="" hidden />
               </div>
               <div class="timer">
                 <strong id="elapsed">0.0<span>s</span></strong>

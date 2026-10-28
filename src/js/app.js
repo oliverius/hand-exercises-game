@@ -73,6 +73,17 @@ $('stop').onclick = stop;
 $('target').onchange = () => {
   engine.targetMs = Number($('target').value);
 };
+$('animation').onchange = () => {
+  const choice = $('animation').value;
+  const imageMode = choice !== 'gauge';
+  $('gauge').classList.toggle('image-reveal', imageMode);
+  $('preview-image').hidden = !imageMode;
+  $('reveal-image').hidden = !imageMode;
+  if (imageMode) {
+    $('preview-image').src = `./img/${choice}.png`;
+    $('reveal-image').src = `./img/${choice}.png`;
+  }
+};
 $('sensitivity').onchange = () => {
   stop();
   engine.entryThreshold = Number($('sensitivity').value);
@@ -219,6 +230,8 @@ function render(now) {
   $('target-copy').textContent = `of ${target} seconds`;
   $('fill').style.height =
     `${Math.min(100, (elapsed / engine.targetMs) * 100)}%`;
+  $('reveal-image').style.clipPath =
+    `inset(${100 - Math.min(100, (elapsed / engine.targetMs) * 100)}% 0 0)`;
   $('gauge').setAttribute('aria-valuemax', String(target));
   $('gauge').setAttribute(
     'aria-valuenow',
